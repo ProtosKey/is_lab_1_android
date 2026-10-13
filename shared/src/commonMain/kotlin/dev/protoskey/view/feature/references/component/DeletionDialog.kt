@@ -19,20 +19,21 @@ fun DeletionDialog(
         title = "Удалить объект?",
         confirmLabel = "Удалить",
         isDangerous = true,
+        confirmEnabled = deletion.canDelete,
         onConfirm = onConfirm,
         onDismiss = onDismiss
     ) {
-        Text("Будет удалён объект ${deletion.title}.")
+        Text("Будет удалён объект ${deletion.title}")
         if (deletion.linkedCities > 0) {
             Text(
-                "С ним связано городов: ${deletion.linkedCities}. " +
-                    "Выберите объект, к которому они будут переподключены."
+                "С ним связано городов: ${deletion.linkedCities}"
             )
             Select(
                 label = "Замена",
                 selected = deletion.replacementId,
                 options = deletion.candidates.map { (id, label) -> id as Int? to label },
                 onSelect = { id -> id?.let(onReplacement) },
+                error = if (deletion.candidates.isEmpty()) "Необходимо создать замену" else null,
                 modifier = Modifier.fillMaxWidth()
             )
         }

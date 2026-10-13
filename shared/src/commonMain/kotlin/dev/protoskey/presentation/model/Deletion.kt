@@ -7,4 +7,7 @@ data class Deletion(
     val linkedCities: Int,
     val candidates: List<Pair<Int, String>>,
     val replacementId: Int? = null
-)
+) {
+    val canDelete: Boolean
+        get() = linkedCities == 0 || replacementId != null
+}

@@ -93,6 +93,7 @@ class ReferencesViewModel(
 
     fun confirmDelete() {
         val deletion = _referencesState.value.deletion ?: return
+        if (!deletion.canDelete) return
         request {
             when (deletion.tab) {
                 ReferenceTab.COORDINATES -> references.deleteCoordinates(deletion.id, deletion.replacementId)

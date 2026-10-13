@@ -19,6 +19,7 @@ fun Dialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     isDangerous: Boolean = false,
+    confirmEnabled: Boolean = true,
     content: @Composable ColumnScope.() -> Unit
 ) {
     AlertDialog(
@@ -35,6 +36,7 @@ fun Dialog(
         confirmButton = {
             TextButton(
                 onClick = onConfirm,
+                enabled = confirmEnabled,
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = if (isDangerous) MaterialTheme.colorScheme.error
                     else MaterialTheme.colorScheme.primary
