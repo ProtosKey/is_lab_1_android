@@ -56,10 +56,11 @@ class CityViewModel(
     }
 
     fun delete() {
-        val id = _cityState.value.id ?: return
+        val state = _cityState.value
+        val id = state.id ?: return
         request {
             cities.delete(id)
-            store.showMessage("Город №$id удалён", MessageType.GOOD)
+            store.showMessage("Город «${state.form.name}» удалён", MessageType.GOOD)
             _cityState.update { it.copy(isClosed = true) }
         }
     }

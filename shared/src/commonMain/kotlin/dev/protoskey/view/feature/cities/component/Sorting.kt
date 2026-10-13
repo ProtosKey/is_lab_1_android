@@ -36,7 +36,7 @@ private val sortFields = listOf(
     "governor" to "Губернатор",
     "capital" to "Столица",
     "establishmentDate" to "Дата основания",
-    "creationDate" to "Дата создания"
+    "creationDate" to "Дата добавления"
 )
 
 @Composable

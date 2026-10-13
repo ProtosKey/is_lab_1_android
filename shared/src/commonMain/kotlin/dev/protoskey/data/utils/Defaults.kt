@@ -3,7 +3,7 @@ package dev.protoskey.data.utils
 import dev.protoskey.data.model.MessageType
 
 object Defaults {
-    fun exception(): String = "Неожиданная ошибка"
+    fun exception(): String = "Что-то пошло не так"
 
     fun message(): String = "Начните работу..."
 

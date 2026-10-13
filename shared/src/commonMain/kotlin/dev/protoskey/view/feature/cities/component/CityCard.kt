@@ -126,11 +126,11 @@ fun CityCard(
                 "Уровень жизни" to StandardOfLiving.labelOf(city.standardOfLiving)
             )
             MetricRow(
-                "Губернатор" to (city.governorName?.let { "$it, ${city.governorAge} лет" } ?: Labels.EMPTY)
+                "Губернатор" to (city.governorName?.let { "$it, ${Labels.age(city.governorAge)}" } ?: Labels.EMPTY)
             )
             MetricRow(
                 "Основан" to Labels.date(city.establishmentDate),
-                "Создан" to Labels.date(city.creationDate)
+                "Добавлен" to Labels.date(city.creationDate)
             )
         }
     }

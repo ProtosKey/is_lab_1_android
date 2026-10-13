@@ -32,7 +32,7 @@ class RestClient(
         } catch (e: CancellationException) {
             throw e
         } catch (_: Exception) {
-            throw ApiException("Сервер недоступен: ${store.server.value}")
+            throw ApiException("Не удалось подключиться к серверу. Проверьте адрес и интернет")
         }
 
         if (response.code in 200..299) {
@@ -44,7 +44,7 @@ class RestClient(
             store.signOut()
         }
         throw ApiException(
-            message = error?.message ?: "Ошибка сервера (${response.code})",
+            message = error?.message ?: "Сервер не смог обработать запрос, попробуйте ещё раз",
             fieldErrors = error?.fieldErrors.orEmpty(),
             code = response.code
         )

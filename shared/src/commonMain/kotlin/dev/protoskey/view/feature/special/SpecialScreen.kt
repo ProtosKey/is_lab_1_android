@@ -70,7 +70,7 @@ class SpecialScreen : Screen {
                 ) {
                     Title(label = "Операции")
 
-                    Section(title = "Удаление по климату", description = "Удаляет один любой город с выбранным климатом") {
+                    Section(title = "Удаление по климату", description = "Удалит один город с выбранным климатом") {
                         Select(
                             label = "Климат",
                             selected = state.climate,
@@ -87,7 +87,7 @@ class SpecialScreen : Screen {
                         )
                     }
 
-                    Section(title = "Подсчёт по высоте", description = "Количество городов с заданной высотой над уровнем моря") {
+                    Section(title = "Подсчёт по высоте", description = "Сколько городов находится на указанной высоте над уровнем моря") {
                         Field(
                             value = state.meters,
                             onValueChange = { value -> viewModel.update { it.copy(meters = value) } },
@@ -100,11 +100,11 @@ class SpecialScreen : Screen {
                         state.count?.let { Result("Найдено городов: $it") }
                     }
 
-                    Section(title = "Поиск по названию", description = "Города, название которых содержит подстроку") {
+                    Section(title = "Поиск по названию", description = "Найдёт города, в названии которых есть введённый текст") {
                         Field(
                             value = state.namePart,
                             onValueChange = { value -> viewModel.update { it.copy(namePart = value) } },
-                            label = "Подстрока",
+                            label = "Часть названия",
                             error = errors["namePart"] ?: errors["part"],
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -125,13 +125,14 @@ class SpecialScreen : Screen {
                         }
                     }
 
-                    Section(title = "Переселение между городами", description = "Всё население города-источника переедет в город-получатель") {
+                    Section(title = "Переселение между городами", description = "Все жители переедут в город-получатель, а город-источник будет удалён") {
                         Row(horizontalArrangement = Arrangement.spacedBy(LocalAppDimens.current.paddingSmall)) {
                             Field(
                                 value = state.sourceId,
                                 onValueChange = { value -> viewModel.update { it.copy(sourceId = value) } },
                                 label = "Источник",
                                 error = errors["sourceId"],
+                                placeholder = "№ города",
                                 keyboardType = KeyboardType.Number,
                                 modifier = Modifier.weight(1f)
                             )
@@ -140,6 +141,7 @@ class SpecialScreen : Screen {
                                 onValueChange = { value -> viewModel.update { it.copy(targetId = value) } },
                                 label = "Получатель",
                                 error = errors["targetId"],
+                                placeholder = "№ города",
                                 keyboardType = KeyboardType.Number,
                                 modifier = Modifier.weight(1f)
                             )
@@ -147,12 +149,13 @@ class SpecialScreen : Screen {
                         FormButton(label = "Переселить", onClick = viewModel::movePopulation, modifier = Modifier.fillMaxWidth())
                     }
 
-                    Section(title = "Переселение в наименьший город", description = "Население переедет в город с наименьшим населением") {
+                    Section(title = "Переселение в самый маленький город", description = "Все жители переедут в город с наименьшим населением, а город-источник будет удалён") {
                         Field(
                             value = state.smallestSourceId,
                             onValueChange = { value -> viewModel.update { it.copy(smallestSourceId = value) } },
                             label = "Источник",
                             error = errors["smallestSourceId"],
+                            placeholder = "№ города",
                             keyboardType = KeyboardType.Number,
                             modifier = Modifier.fillMaxWidth()
                         )

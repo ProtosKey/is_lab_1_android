@@ -5,6 +5,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.protoskey.presentation.model.Deletion
+import dev.protoskey.presentation.model.ReferenceTab
+import dev.protoskey.presentation.tools.Labels
 import dev.protoskey.view.component.Dialog
 import dev.protoskey.view.component.Select
 
@@ -16,20 +18,38 @@ fun DeletionDialog(
     onDismiss: () -> Unit
 ) {
     Dialog(
-        title = "Удалить объект?",
+        title = when (deletion.tab) {
+            ReferenceTab.COORDINATES -> "Удалить координаты?"
+            ReferenceTab.HUMANS -> "Удалить губернатора?"
+        },
         confirmLabel = "Удалить",
         isDangerous = true,
         confirmEnabled = deletion.canDelete,
         onConfirm = onConfirm,
         onDismiss = onDismiss
     ) {
-        Text("Будет удалён объект ${deletion.title}")
-        if (deletion.linkedCities > 0) {
+        val cities = deletion.linkedCities
+        Text(
+            when (deletion.tab) {
+                ReferenceTab.COORDINATES -> "Координаты (${deletion.title}) будут удалены"
+                ReferenceTab.HUMANS -> "Губернатор «${deletion.title}» будет удалён"
+            }
+        )
+        if (cities > 0) {
             Text(
-                "С ним связано городов: ${deletion.linkedCities}"
+                when (deletion.tab) {
+                    ReferenceTab.COORDINATES ->
+                        "Они указаны у $cities ${Labels.plural(cities, "города", "городов", "городов")}"
+
+                    ReferenceTab.HUMANS ->
+                        "Он управляет $cities ${Labels.plural(cities, "городом", "городами", "городами")}"
+                }
             )
             Select(
-                label = "Замена",
+                label = when (deletion.tab) {
+                    ReferenceTab.COORDINATES -> "Новые координаты"
+                    ReferenceTab.HUMANS -> "Новый губернатор"
+                },
                 selected = deletion.replacementId,
                 options = deletion.candidates.map { (id, label) -> id as Int? to label },
                 onSelect = { id -> id?.let(onReplacement) },

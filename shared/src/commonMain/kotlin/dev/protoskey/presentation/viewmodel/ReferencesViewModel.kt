@@ -69,7 +69,7 @@ class ReferencesViewModel(
             ReferenceTab.COORDINATES -> Deletion(
                 tab = tab,
                 id = id,
-                title = state.coordinates.find { it.id == id }?.let(Labels::coordinates) ?: "№$id",
+                title = state.coordinates.find { it.id == id }?.let { "широта ${it.x}, долгота ${it.y}" } ?: "№$id",
                 linkedCities = references.citiesWithCoordinates(id).size,
                 candidates = state.coordinates.filter { it.id != id }.map { it.id!! to Labels.coordinates(it) }
             )
@@ -77,7 +77,7 @@ class ReferencesViewModel(
             ReferenceTab.HUMANS -> Deletion(
                 tab = tab,
                 id = id,
-                title = state.humans.find { it.id == id }?.let(Labels::human) ?: "№$id",
+                title = state.humans.find { it.id == id }?.name ?: "№$id",
                 linkedCities = references.citiesWithGovernor(id).size,
                 candidates = state.humans.filter { it.id != id }.map { it.id!! to Labels.human(it) }
             )
@@ -100,7 +100,13 @@ class ReferencesViewModel(
                 ReferenceTab.HUMANS -> references.deleteHuman(deletion.id, deletion.replacementId)
             }
             _referencesState.update { it.copy(deletion = null) }
-            showMessage("Объект ${deletion.title} удалён", MessageType.GOOD)
+            showMessage(
+                when (deletion.tab) {
+                    ReferenceTab.COORDINATES -> "Координаты удалены"
+                    ReferenceTab.HUMANS -> "Губернатор «${deletion.title}» удалён"
+                },
+                MessageType.GOOD
+            )
         }
     }
 
@@ -137,7 +143,13 @@ class ReferencesViewModel(
         request(onError = { e -> updateErrors(editor, e.fieldErrors) }) {
             save()
             _referencesState.update { it.copy(editor = null) }
-            showMessage("Сохранено", MessageType.GOOD)
+            showMessage(
+                when (editor) {
+                    is Editor.CoordinatesEditor -> "Координаты сохранены"
+                    is Editor.HumanEditor -> "Губернатор «${editor.name.trim()}» сохранён"
+                },
+                MessageType.GOOD
+            )
         }
     }
 

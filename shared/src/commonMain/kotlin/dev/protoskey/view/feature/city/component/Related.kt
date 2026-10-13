@@ -14,15 +14,15 @@ fun Related(
     coordinates: Coordinates?,
     governor: Human?
 ) {
-    Section(title = "Связанные объекты") {
-        Line("Дата создания", Labels.date(creationDate))
+    Section(title = "Подробнее") {
+        Line("Добавлен в систему", Labels.date(creationDate))
         Line(
             "Координаты",
-            coordinates?.let { "широта ${it.x}, долгота ${it.y} (№${it.id})" } ?: Labels.EMPTY
+            coordinates?.let(Labels::coordinates) ?: Labels.EMPTY
         )
         Line(
             "Губернатор",
-            governor?.let { "${it.name}, ${it.age} лет (№${it.id})" } ?: Labels.EMPTY
+            governor?.let(Labels::human) ?: Labels.EMPTY
         )
         Line("Дата рождения губернатора", Labels.date(governor?.birthday))
     }

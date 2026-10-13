@@ -16,7 +16,7 @@ object Parser {
         fun date(field: String, digits: String, mask: DateMask): String? {
             if (digits.isEmpty()) return null
             return mask.toServer(digits) ?: run {
-                errors[field] = "Введите дату полностью: ${mask.placeholder}"
+                errors[field] = "Введите дату полностью"
                 null
             }
         }
@@ -30,7 +30,7 @@ object Parser {
         ): T? {
             val value = text.trim()
             if (value.isEmpty()) {
-                if (required) errors[field] = "Поле обязательно"
+                if (required) errors[field] = "Заполните это поле"
                 return null
             }
             return convert(value) ?: run {

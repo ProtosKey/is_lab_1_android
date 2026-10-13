@@ -6,6 +6,7 @@ import dev.protoskey.data.model.MessageType
 import dev.protoskey.data.repository.SpecialRepository
 import dev.protoskey.presentation.basic.BaseViewModel
 import dev.protoskey.presentation.state.SpecialState
+import dev.protoskey.presentation.tools.Labels
 import dev.protoskey.presentation.tools.Parser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,7 +31,7 @@ class SpecialViewModel(
         perform {
             val city = special.deleteOneByClimate(climate)
             showMessage(
-                "Удалён город №${city.id} «${city.name}» (${Climate.labelOf(climate)})",
+                "Город «${city.name}» с климатом «${Climate.labelOf(climate)}» удалён",
                 MessageType.GOOD
             )
         }
@@ -48,7 +49,7 @@ class SpecialViewModel(
     fun findByNamePart() {
         val part = _specialState.value.namePart.trim()
         if (part.isEmpty()) {
-            fail(mapOf("namePart" to "Введите подстроку"))
+            fail(mapOf("namePart" to "Введите часть названия"))
             return
         }
         perform {
@@ -66,7 +67,7 @@ class SpecialViewModel(
         perform {
             val target = special.movePopulation(sourceId, targetId)
             showMessage(
-                "Население переселено в «${target.name}», теперь там ${target.population}",
+                "Жители переехали в «${target.name}», теперь там ${population(target.population)}",
                 MessageType.GOOD
             )
         }
@@ -79,11 +80,14 @@ class SpecialViewModel(
         perform {
             val target = special.movePopulationToSmallest(sourceId)
             showMessage(
-                "Население переселено в «${target.name}» (№${target.id}), теперь там ${target.population}",
+                "Жители переехали в «${target.name}» (№${target.id}), теперь там ${population(target.population)}",
                 MessageType.GOOD
             )
         }
     }
+
+    private fun population(count: Int?): String =
+        "$count ${Labels.plural(count, "житель", "жителя", "жителей")}"
 
     private fun fail(errors: Map<String, String>) {
         _specialState.update { it.copy(errors = errors) }

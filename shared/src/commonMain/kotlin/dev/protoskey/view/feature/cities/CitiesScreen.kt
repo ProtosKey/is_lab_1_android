@@ -91,7 +91,7 @@ class CitiesScreen : Screen {
 
                     Row(horizontalArrangement = Arrangement.spacedBy(LocalAppDimens.current.paddingSmall)) {
                         Select(
-                            label = "Фильтр",
+                            label = "Искать по",
                             selected = state.query.filterField,
                             options = filterFields,
                             onSelect = viewModel::updateFilterField,
@@ -100,7 +100,7 @@ class CitiesScreen : Screen {
                         Field(
                             value = state.query.filterValue,
                             onValueChange = viewModel::updateFilterValue,
-                            label = "Содержит",
+                            label = "Поиск",
                             modifier = Modifier.weight(0.55f)
                         )
                     }
@@ -117,7 +117,7 @@ class CitiesScreen : Screen {
                             Loading()
                         } else if (state.cities.isEmpty()) {
                             Empty(
-                                help = if (state.query.filterValue.isBlank()) "Городов пока нет, нажмите добавить"
+                                help = if (state.query.filterValue.isBlank()) "Городов пока нет. Нажмите «Добавить», чтобы создать первый"
                                 else "Ничего не найдено",
                                 icon = Icons.Default.LocationCity
                             )

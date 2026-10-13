@@ -97,7 +97,13 @@ class ReferencesScreen : Screen {
                     if (isEmpty && state.isLoading) {
                         Loading()
                     } else if (isEmpty) {
-                        Empty(help = "Список пуст, нажмите добавить", icon = Icons.AutoMirrored.Filled.LibraryBooks)
+                        Empty(
+                            help = when (state.tab) {
+                                ReferenceTab.COORDINATES -> "Координат пока нет. Нажмите «Добавить»"
+                                ReferenceTab.HUMANS -> "Губернаторов пока нет. Нажмите «Добавить»"
+                            },
+                            icon = Icons.AutoMirrored.Filled.LibraryBooks
+                        )
                     } else {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
